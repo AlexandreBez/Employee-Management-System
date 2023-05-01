@@ -1,0 +1,103 @@
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete employee</h1>
+        <button type="button" (click)="idForDelete = null" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You really want to delete the employee register?
+        <br>
+        Action can't be undone after confirmation
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteTask(idForDelete)">Confirm</button>
+        <button type="button" class="btn btn-dark" (click)="idForDelete = null" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container text-center mb-5">
+  <div class="d-flex flex-column mt-5 align-items-center">
+    <div class="container">
+      <div *ngIf="errorMessage !== null" class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-diamond"></i>
+        {{errorMessage}}
+      </div>
+      <div *ngIf="successMessage !== null" class="alert alert-success" role="alert">
+        <i class="bi bi-check2-circle"></i>
+        {{successMessage}}
+      </div>
+      <h3>Search Employee</h3>
+      <hr>
+      <div class="d-flex">
+        <input [(ngModel)]="employeeName" class="form-control me-2" type="text" placeholder="Name..." aria-label="Search">
+        <input [(ngModel)]="companyName" class="form-control me-2" type="text" placeholder="Company..." aria-label="Search">
+        <button (click)="searchEmployee()" class="btn btn-outline-primary">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <hr>
+      <app-spinner *ngIf="isLoading"></app-spinner>
+      <div class="d-flex flex-column mt-5" *ngIf="employeeData === null">
+        <img src="assets/imgs/undraw_Empty_re_opql.png" alt="empty list">
+      </div>
+
+      <div *ngIf="!isLoading">
+        <table class="table table-hover" *ngIf="employeeData !== null">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">
+                Name
+              </th>
+              <th scope="col">
+                Company Name
+              </th>
+              <th scope="col">
+                Role
+              </th>
+              <th scope="col">
+                Salary
+              </th>
+              <th scope="col">
+                Update
+              </th>
+              <th scope="col">
+                Delete
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let employee of employeeData">
+                <th>
+                  {{employee.name}}
+                </th>
+                <td>
+                  {{employee.companyName}}
+                </td>
+                <td>
+                  {{employee.role}}
+                </td>
+                <td>
+                  ${{employee.salary}}
+                </td>
+                <td>
+                  <button class="btn btn-warning" (click)="updatedEmploye(employee.employeeId)">
+                    <i class="bi bi-person-fill-gear"></i>
+                  </button>
+                </td>
+                <td>
+                  <button class="btn btn-danger" (click)="idForDelete = employee.employeeId" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-person-fill-x"></i>
+                  </button>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
